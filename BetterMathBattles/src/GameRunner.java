@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -23,18 +24,24 @@ public class GameRunner implements ActionListener, KeyListener {
     int[] randNums;
     Random randy;
     final int ANS_CHOICES=5;
-    
+    int maximumNumber=20, minimumNumber=4;
+    int[] problemSet;
     
     boolean answer = true;
+    boolean addition=true, subtraction=false, division=false, multiplication=false;
     
     int speed = 10;
     
-    int Health1= 100;
-    int Health2= 100; 
+    int Health1= 50;
+    int Health2= 50; 
     
+    String Question = new String("1+1");
     
     public static void main(String[] args) throws Exception {
         new GameRunner();
+        
+        
+        
     }
 
     public GameRunner() {
@@ -44,6 +51,8 @@ public class GameRunner implements ActionListener, KeyListener {
         display = new DisplayPanel();
         frame.add(display);
         randNums=new int[ANS_CHOICES];
+        
+        problemSet=getRandomProblem();
         randy=new Random();
         for (int i = 0; i < ANS_CHOICES; i++) {
             randNums[i]=randy.nextInt(27*Wall.WALL_SIZE);
@@ -55,13 +64,31 @@ public class GameRunner implements ActionListener, KeyListener {
         walls = new ArrayList<Wall>();
         spikes = new ArrayList<Spike>();
         for (int i = 0; i < ANS_CHOICES; i++) {
-            Spike a=new Spike(11*Wall.WALL_SIZE+randNums[i],10*Wall.WALL_SIZE+2*Wall.WALL_SIZE*i);
+            Spike a=new Spike(11*Wall.WALL_SIZE+randNums[i],10*Wall.WALL_SIZE+6*Wall.WALL_SIZE*i);
             a.setBadSpike(goodNum==i);
             spikes.add(a);
             
+            if(goodNum==i){
+                a.setText(""+problemSet[2]);
+            }
+            else{
+                int fake=problemSet[2]+(ANS_CHOICES-i);
+                a.setText(""+fake);
+            }
             
-            spikes.add(new Spike(40*Wall.WALL_SIZE+randNums[i],10*Wall.WALL_SIZE+6*Wall.WALL_SIZE*i));
             
+            //spikes.add(new Spike(40*Wall.WALL_SIZE+randNums[i],10*Wall.WALL_SIZE+6*Wall.WALL_SIZE*i));
+            Spike b=new Spike(40*Wall.WALL_SIZE+randNums[i],10*Wall.WALL_SIZE+6*Wall.WALL_SIZE*i);
+            b.setBadSpike(goodNum==i);
+            spikes.add(b);
+            
+            if(goodNum==i){
+                b.setText(""+problemSet[2]);
+            }
+            else{
+                int fake=problemSet[2]+(ANS_CHOICES-i);
+                b.setText(""+fake);
+            }
         }
         
         
@@ -82,6 +109,12 @@ public class GameRunner implements ActionListener, KeyListener {
         } catch (Exception e) {
             System.out.println("Error in reading in file");
         }
+        if(Health1==0){
+            JOptionPane.showMessageDialog(null, "Player 2 wins!");
+        }
+        if(Health2==0){
+            JOptionPane.showMessageDialog(null, "Player 1 wins!");
+        }
 
         //end your constructor code
         timer = new javax.swing.Timer(1/speed, this);
@@ -95,14 +128,6 @@ public class GameRunner implements ActionListener, KeyListener {
         //type what needs to be performed every time the timer ticks
         player1.move(walls);
         player2.move(walls);
-        
-        
-        
-       
-        
-    
-        
-        
         
         for(Spike  spike: spikes){
             if(player1.intersects(spike)){
@@ -124,6 +149,9 @@ public class GameRunner implements ActionListener, KeyListener {
                     JOptionPane.showMessageDialog(null, "Player 1 wins!");
                     System.exit(1);
                 }
+                
+                
+
             }
         }
          for(int i = 0; i <spikes.size(); i++){
@@ -203,6 +231,7 @@ public class GameRunner implements ActionListener, KeyListener {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             //draw your graphics here
+            g.setFont(new Font("Georgia",Font.PLAIN,30));
             player1.draw(g);
             player2.draw(g);
             for (Wall wall : walls) {
@@ -218,9 +247,25 @@ public class GameRunner implements ActionListener, KeyListener {
             g.fillRect(1000, 50, Health2, 10);
             
             g.setColor(Color.BLACK);
-            g.drawString("0/0", 550, 50);
+            g.drawString(Question, 550, 50);
             
             
         }
+    }
+    
+    public int[] getAdditionProblem(){
+        int[] prob=new int[3];
+        Random randy=new Random();
+        prob[0]=randy.nextInt(maximumNumber/2-minimumNumber)+minimumNumber;        
+        prob[1]=randy.nextInt(maximumNumber/2-minimumNumber)+minimumNumber;
+        prob[2]=prob[0]+prob[1];
+        Question=prob[0]+"+"+prob[1];
+        return prob;
+    }
+    
+    public int[] getRandomProblem(){
+        //if random number AND addition
+            return getAdditionProblem();
+        //return null;
     }
 }

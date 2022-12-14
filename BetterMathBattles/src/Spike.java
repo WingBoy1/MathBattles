@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 import java.util.*;
 
 public class Spike extends Rectangle{
-   
+   String text="";
     public Spike(){
         super(0,0,20,20);
         Random randy=new Random();
@@ -30,6 +30,14 @@ public class Spike extends Rectangle{
     public void setBadSpike(boolean badSpike) {
         this.badSpike = badSpike;
     }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
     
     
     
@@ -39,6 +47,7 @@ public class Spike extends Rectangle{
     public void draw(Graphics g){
         g.setColor(Color.orange);
         g.fillOval(x,y,width,height);
+        g.drawString(text, x, y);
     }
 
 }
