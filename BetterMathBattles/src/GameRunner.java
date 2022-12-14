@@ -32,8 +32,11 @@ public class GameRunner implements ActionListener, KeyListener {
 
     int speed = 10;
 
-    int Health1 = 50;
-    int Health2 = 50;
+    final int MAX_HEALTH=200;
+    final int BAR_WIDTH=200, BAR_HEIGHT=20;
+    
+    int Health1 = MAX_HEALTH;
+    int Health2 = MAX_HEALTH;
 
     final int GOOD_HIT = 20, BAD_HIT = 10;
 
@@ -250,10 +253,18 @@ public class GameRunner implements ActionListener, KeyListener {
                 spike.draw(g);
             }
 
+            
+            g.setColor(Color.red);
+            g.fillRect(100, 50, BAR_WIDTH, BAR_HEIGHT);
             g.setColor(Color.green);
-            g.fillRect(100, 50, Health1, 10);
+            g.fillRect(100, 50, (int)(Health1*1.0/MAX_HEALTH*BAR_WIDTH), BAR_HEIGHT);
 
-            g.fillRect(1000, 50, Health2, 10);
+            
+            g.setColor(Color.red);
+            g.fillRect(800, 50, 200, 10);
+            int barWidth=(int)(Health2*1.0/MAX_HEALTH*200);
+            g.setColor(Color.green);
+            g.fillRect(800+(200-barWidth), 50, barWidth, 10);
 
             g.setColor(Color.BLACK);
             g.drawString(Question, 550, 50);
