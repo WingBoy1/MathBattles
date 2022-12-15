@@ -26,6 +26,8 @@ public class GameRunner implements ActionListener, KeyListener {
     final int ANS_CHOICES = 5;
     int maximumNumber = 50, minimumNumber = 4;
     int[] problemSet;
+    
+    final int BAR1_X=100, BAR1_Y=50, BAR2_X=800;
 
     boolean answer = true;
     boolean addition = true, subtraction = false, division = false, multiplication = false;
@@ -33,7 +35,7 @@ public class GameRunner implements ActionListener, KeyListener {
     int speed = 10;
 
     final int MAX_HEALTH=200;
-    final int BAR_WIDTH=200, BAR_HEIGHT=20;
+    final int BAR_WIDTH=300, BAR_HEIGHT=20;
     
     int Health1 = MAX_HEALTH;
     int Health2 = MAX_HEALTH;
@@ -44,6 +46,28 @@ public class GameRunner implements ActionListener, KeyListener {
 
     public static void main(String[] args) throws Exception {
         new GameRunner();
+         JPanel panel=new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("Please select what type of equation(s) you want"));
+        panel.add(new JLabel("                                               "));
+        JCheckBox jr1=new JCheckBox("+");
+        JCheckBox jr2=new JCheckBox("-");
+        JCheckBox jr3=new JCheckBox("*");
+        JCheckBox jr4=new JCheckBox("/");
+        panel.add(jr1);
+        panel.add(jr2);
+        panel.add(jr3);
+        panel.add(jr4);
+        panel.add(new JLabel("Max"));
+        JSpinner spin=new JSpinner(new SpinnerNumberModel(10,1,24,1));
+        panel.add(spin);
+        panel.add(new JLabel("Min"));
+        JSpinner spin2=new JSpinner(new SpinnerNumberModel(10,1,24,1));
+        panel.add(spin2);
+        JOptionPane.showMessageDialog(null, panel);
+        
+        if(jr1.isSelected())System.out.println("Addition");
+        System.out.println(spin.getValue());
+        System.out.println(spin2.getValue());
 
     }
 
@@ -255,16 +279,16 @@ public class GameRunner implements ActionListener, KeyListener {
 
             
             g.setColor(Color.red);
-            g.fillRect(100, 50, BAR_WIDTH, BAR_HEIGHT);
+            g.fillRect(BAR1_X, BAR1_Y, BAR_WIDTH, BAR_HEIGHT);
             g.setColor(Color.green);
-            g.fillRect(100, 50, (int)(Health1*1.0/MAX_HEALTH*BAR_WIDTH), BAR_HEIGHT);
+            g.fillRect(BAR1_X, BAR1_Y, (int)(Health1*1.0/MAX_HEALTH*BAR_WIDTH), BAR_HEIGHT);
 
             
             g.setColor(Color.red);
-            g.fillRect(800, 50, 200, 10);
+            g.fillRect(BAR2_X, BAR1_Y, BAR_WIDTH, BAR_HEIGHT);
             int barWidth=(int)(Health2*1.0/MAX_HEALTH*200);
             g.setColor(Color.green);
-            g.fillRect(800+(200-barWidth), 50, barWidth, 10);
+            g.fillRect(BAR2_X+(BAR_WIDTH-barWidth), BAR1_Y, BAR_WIDTH, BAR_HEIGHT);
 
             g.setColor(Color.BLACK);
             g.drawString(Question, 550, 50);
